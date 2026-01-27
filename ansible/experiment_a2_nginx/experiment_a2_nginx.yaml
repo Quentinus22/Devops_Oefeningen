@@ -1,0 +1,62 @@
+- name: A2 - Nginx Webserver Experiment
+  hosts: localhost
+  become: yes
+  connection: local
+
+  tasks:
+    - name: STOP APACHE TO PREVENT CONFLICTS
+      service:
+        name: apache2
+        state: stopped
+      ignore_errors: yes  # Gaat door als apache2 niet aanwezig is
+
+    - name: INSTALL NGINX
+      apt:
+        name: nginx
+        state: latest
+
+    # De rest van je Nginx configuratie...
+
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+
+    - name: Configure Nginx to listen on port 8808
+      lineinfile:
+        path: /etc/nginx/sites-available/default
+        regexp: 'listen 80 default_server;'
+        line: '        listen 8808 default_server;'
+      notify: Restart Nginx
+
+    - name: Create Challenge Home Page (Slide 4 requirements)
+      copy:
+        dest: /var/www/html/index.html
+        content: |
+          <html>
+          <body>
+            <h1>Nginx Server - Developed by Glineur Quentin</h1>
+            <p>Current IP: {{ ansible_default_ipv4.address }}</p>
+            <p>Date/Time: {{ ansible_date_time.date }} {{ ansible_date_time.time }}</p>
+            <p><a href="map.html">Go to Map Page</a></p>
+          </body>
+          </html>
+
+    - name: Create Map Page (Slide 4 requirements)
+      copy:
+        dest: /var/www/html/map.html
+        content: |
+          <html>
+          <body>
+            <h1>Current Location</h1>
+            <iframe width="425" height="350" src="https://www.openstreetmap.org/export/embed.html?bbox=3.5,50.5,5.5,51.5"></iframe>
+          </body>
+          </html>
+
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
