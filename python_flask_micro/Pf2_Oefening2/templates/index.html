@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Examen Portaal Pf2</title>
+</head>
+<body style="font-family: sans-serif; background-color: #f0f0f0;">
+    <div style="margin: 50px; padding: 20px; border: 1px solid #ccc; background: white;">
+        <h2>Systeem Login (Project Pf2)</h2>
+        
+        {% if error %}
+            <p style="color: darkred; font-weight: bold;">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST">
+            <label>Gebruikers-ID:</label><br>
+            <input type="text" name="user_id"><br><br>
+            
+            <label>Geheime Sleutel:</label><br>
+            <input type="password" name="secret_key"><br><br>
+            
+            <button type="submit">Verifieer Toegang</button>
+        </form>
+    </div>
+</body>
+</html>
