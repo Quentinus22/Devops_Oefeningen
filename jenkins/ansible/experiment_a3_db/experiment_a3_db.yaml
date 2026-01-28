@@ -1,0 +1,36 @@
+---
+- name: A3 - Database Server Experiment
+  hosts: dbservers
+  become: yes
+
+  tasks:
+    - name: Install MariaDB (Database)
+      apt:
+        name: mariadb-server
+        state: latest
+        update_cache: yes
+
+    - name: Zorg dat de MariaDB service draait
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: Installeer Python MySQL library (nodig voor Ansible modules)
+      apt:
+        name: python3-mysqldb
+        state: present
+
+    - name: Maak een nieuwe database aan genaamd 'GlineurQuentin_db'
+      mysql_db:
+        name: GlineurQuentin_db
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Maak een database gebruiker aan
+      mysql_user:
+        name: devuser
+        password: Cisco123!
+        priv: 'GlineurQuentin_db.*:ALL'
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock

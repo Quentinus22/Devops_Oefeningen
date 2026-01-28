@@ -1,0 +1,26 @@
+---
+- name: Installeer Apache Webserver voor Examen
+  hosts: webservers
+  become: yes  # Dit zorgt ervoor dat we root rechten gebruiken (sudo)
+
+  tasks:
+    - name: Update de apt cache (zodat we de nieuwste pakketten zien)
+      apt:
+        update_cache: yes
+
+    - name: Installeer Apache2
+      apt:
+        name: apache2
+        state: present
+
+    - name: Start Apache service en zorg dat hij altijd aan gaat
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+    - name: Plaats de index.html pagina
+      template:
+        src: index.html.j2
+        dest: /var/www/html/index.html
+        mode: '0644'

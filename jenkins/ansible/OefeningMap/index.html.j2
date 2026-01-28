@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Examen Pagina</title>
+</head>
+<body>
+    <h1>OefeningMap</h1>
+    <hr>
+    
+    <p><strong>Datum:</strong> {{ ansible_date_time.date }}</p>
+    
+    <p><strong>Naam:</strong> Quentin</p>
+    
+    <h3>Map van DILBEEK</h3>
+    <iframe 
+            width="400" height="300" frameborder="0" style="border:0" 
+            src="https://www.google.com/maps?q=Dilbeek,Belgium&output=embed">
+        </iframe>
+</body>
+</html>
